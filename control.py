@@ -12,14 +12,15 @@ class PidController(Controller):
     def __init__(self, k_p, k_i, k_d):
         super().__init__(k_p, k_i, k_d)
     
-    def proportion(self, k_p, error):
+    def proportion(self, error):
         return self.k_p * error 
 
-    def integral(self, k_i, error):
-        return self.k_i * error
+    def integral(self, error):
+        self.integral_sum += error
+        return self.k_i * self.integral_sum 
     
-    def derivate(self, k_d, error):
-        derivate_value = self.k_d * (error - self.perv_error)
+    def derivate(self, error):
+        derivate_value = self.k_d * (error - self.prev_error)
         self.prev_error = error
         return derivate_value
 
@@ -27,6 +28,5 @@ class PidController(Controller):
         P = self.proportion(error)
         I = self.integral(error)
         D = self.derivate(error)
+        print(f"P: {P}, I: {I}, D: {D}")
         return P + I + D
-
-#class nn_controller(controller):

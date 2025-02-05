@@ -1,4 +1,3 @@
-import jax.numpy as jnp 
 import random
 import json
 from abc import ABC, abstractmethod
