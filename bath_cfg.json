@@ -1,0 +1,12 @@
+{
+	"parameters": {
+		"initial_state": 2,
+		"target_state": 3,
+		"disturbance_range": [-0.01, 0.01] 
+	},	
+	"additional_parameters": {
+		"cross_section": 1,
+		"drain": 0.01
+	}
+
+}
