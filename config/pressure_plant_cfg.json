@@ -1,0 +1,13 @@
+{
+	"module": "pressure",
+	"plant_class": "Pressure",
+	"parameters": {
+		"initial_state": 0.0,
+		"target_state": 3.0,
+		"disturbance_range": [-0.01, 0.01] 
+	},	
+	"additional_parameters": {
+		"temperature": 300.0,
+		"volume": 10
+	}
+}

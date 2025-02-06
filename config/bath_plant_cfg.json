@@ -1,0 +1,15 @@
+{
+	"module": "cruise",
+	"plant_class": "Cruise",
+	"parameters": {
+		"initial_state": 0,
+		"target_state": 50,
+		"disturbance_range": [-0.01, 0.01] 
+	},	
+	"additional_parameters": {
+		"drag": 5.0,
+		"air_density": 0.05,
+		"frontal_area": 2.0,
+		"acceleration": 2
+	}
+}

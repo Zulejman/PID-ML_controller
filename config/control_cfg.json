@@ -3,7 +3,7 @@
 	"k_p": 1.0,
 	"k_i": 0.1,
 	"k_d": 0.01,
-	"epochs": 500,
-	"steps": 150,
+	"epochs": 100,
+	"steps": 100,
 	"learning_rate": 0.05
 }

@@ -1,0 +1,14 @@
+{
+	"module": "cournot",
+	"plant_class": "Cournot",
+	"parameters": {
+		"initial_state": 0.5,
+		"target_state": 3.0,
+		"disturbance_range": [-0.1, 0.1] 
+	},	
+	"additional_parameters": {
+		"pmax": 10.0,
+		"cm": 0.1,
+		"q2_initial":0.5
+	}
+}

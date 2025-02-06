@@ -5,20 +5,19 @@ import jax.numpy as jnp
 import optax
 
 class CONSYS:
+
+    
     def __init__(self, plant_config, control_config):
-        # Load plant configuration.
+
         with open(plant_config, "r") as file:
             plant_data = json.load(file)
-        # Load control configuration.
         with open(control_config, "r") as file:
             control_data = json.load(file)
 
-        # Dynamically import the plant class.
         plant_module_name = plant_data.get("module", "plant")
         plant_class_name = plant_data.get("plant_class", "Bathtub")
         plant_module = importlib.import_module(plant_module_name)
         plant_class = getattr(plant_module, plant_class_name)
-        # Create the plant instance.
         self.plant = plant_class(plant_config)
 
         # Set up training parameters.
