@@ -1,6 +1,6 @@
-from plant import Plant
 import jax
 import jax.numpy as jnp
+from .plant import Plant
 
 class Bathtub(Plant):
 

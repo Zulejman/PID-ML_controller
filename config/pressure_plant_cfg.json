@@ -1,5 +1,5 @@
 {
-	"module": "pressure",
+	"module": "plants.pressure",
 	"plant_class": "Pressure",
 	"parameters": {
 		"initial_state": 0.0,

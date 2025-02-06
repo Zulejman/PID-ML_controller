@@ -1,7 +1,7 @@
 import json
 import jax
 import jax.numpy as jnp
-from plant import Plant
+from .plant import Plant
 
 class Cournot(Plant):
 

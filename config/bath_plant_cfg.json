@@ -1,15 +1,13 @@
 {
-	"module": "cruise",
-	"plant_class": "Cruise",
+	"module": "plants.bath",
+	"plant_class": "Bathtub",
 	"parameters": {
 		"initial_state": 0,
-		"target_state": 50,
+		"target_state": 15,
 		"disturbance_range": [-0.01, 0.01] 
 	},	
 	"additional_parameters": {
-		"drag": 5.0,
-		"air_density": 0.05,
-		"frontal_area": 2.0,
-		"acceleration": 2
+		"cross_section":2.0,
+		"drain": 0.02
 	}
 }

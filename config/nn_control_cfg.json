@@ -1,0 +1,13 @@
+{
+	"controller": "NN",
+	"k_p": 1.0,
+	"k_i": 0.1,
+	"k_d": 0.01,
+	"layers": 2,
+	"neurons": 10,
+	"activation": "relu",
+	"init_range": [-0.1, 0.1],
+	"epochs": 100,
+	"steps": 100,
+	"learning_rate": 0.0001
+}
