@@ -4,6 +4,6 @@
 	"k_i": 0.1,
 	"k_d": 0.01,
 	"epochs": 500,
-	"steps": 50,
-	"learning_rate": 0.01
+	"steps": 150,
+	"learning_rate": 0.05
 }

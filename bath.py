@@ -1,31 +1,32 @@
 from plant import Plant
+import jax
 import jax.numpy as jnp
 
 class Bathtub(Plant):
 
-    G_C = 9.8
+    g = 9.8
 
     def __init__(self, file_name):
         super().__init__(file_name)
-        bath_parameters = self.config_parameters.get("additional_parameters",{}) 
-        self.cross_section = bath_parameters.get("cross_section", 0)
-        self.drain = bath_parameters.get("drain", 0)
+        bath_params = self.additional_parameters
+        self.cross_section = jnp.array(bath_params.get("cross_section", 1.0), dtype=jnp.float32)
+        self.drain = jnp.array(bath_params.get("drain", 0.01), dtype=jnp.float32)
 
-    def update_state(self, control_signal):
-        dh = self.height_change(control_signal)
-        self.current_state = self.current_state + dh
-        self.current_state = jnp.maximum(self.current_state, 0)
-        return self.current_state 
+    def give_velocity(self, state):
+        return jnp.sqrt(2 * self.g * state)
 
+    def flow_rate(self, state):
+        return self.drain * self.give_velocity(state)
 
-    def give_velocity(self):
-        return (2 * self.G_C * self.current_state) ** 0.5
-
-    def flow_rate(self):
-        return self.drain * self.give_velocity()
-
-    def volume_change(self, control_signal):
-        return control_signal + self.generate_disturbance() - self.flow_rate() 
-
-    def height_change(self, control_signal):
-        return (self.volume_change(control_signal)) / self.cross_section
+    def update_state(self, state, control_signal, key):
+        key, subkey = jax.random.split(key)
+        disturbance = jax.random.uniform(
+            subkey,
+            shape=(),
+            minval=self.disturbance_range[0],
+            maxval=self.disturbance_range[1]
+        )
+        volume_change = control_signal + disturbance - self.flow_rate(state)
+        dh = volume_change / self.cross_section
+        new_state = jnp.maximum(state + dh, 0.0)
+        return new_state, key

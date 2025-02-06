@@ -2,12 +2,12 @@
 	"module": "bath",
 	"plant_class": "Bathtub",
 	"parameters": {
-		"initial_state": 4,
-		"target_state": 7,
+		"initial_state": 0,
+		"target_state": 20,
 		"disturbance_range": [-0.01, 0.01] 
 	},	
 	"additional_parameters": {
-		"cross_section": 1,
-		"drain": 0.1
+		"cross_section": 5.0,
+		"drain": 0.05
 	}
 }

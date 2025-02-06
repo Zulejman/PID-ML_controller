@@ -1,6 +1,5 @@
-import random
 import json
-import jax
+import jax.numpy as jnp
 from abc import ABC, abstractmethod
 
 class Plant(ABC):
@@ -11,25 +10,18 @@ class Plant(ABC):
             self.config_parameters = json.load(config)
 
         global_parameters = self.config_parameters.get("parameters",{}) 
-        #Subclas are gonna require "additional_parameters"
 
-        self.initial_state = global_parameters.get("initial_state", 0)
-        self.current_state = global_parameters.get("initial_state", 0)
-        self.target_state = global_parameters.get("target_state", 0)
-        self.disturbance_range = global_parameters.get("disturbance_range", (-0.01, 0.01))
-        self.disturbance = 0 
-        self.additional_parameters = self.config_parameters.get("additional_parameters", 0)
+        self.initial_state = jnp.array(global_parameters.get("initial_state", 0.0), dtype=jnp.float32)
+        self.target_state = jnp.array(global_parameters.get("target_state", 0.0), dtype=jnp.float32)
+        self.disturbance_range = tuple(global_parameters.get("disturbance_range", [-0.01, 0.01]))
+        self.additional_parameters = self.config_parameters.get("additional_parameters", {})
 
     @abstractmethod
-    def update_state(self, control_signal):
+    def update_state(self, state, control_signal, key):
         pass
         
-    def compute_error(self):
-        return self.target_state - self.current_state
+    def compute_error(self, state):
+        return self.target_state - state 
 
-    def generate_disturbance(self):
-        self.disturbance = jax.random.uniform(*self.disturbance_range)
-        return self.disturbance 
-
-    def reset_plant(self):
-        self.current_state = self.initial_state
+    def reset_state(self):
+        return self.initial_state
