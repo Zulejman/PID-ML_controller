@@ -4,10 +4,10 @@
 	"parameters": {
 		"initial_state": 0,
 		"target_state": 15,
-		"disturbance_range": [-0.01, 0.01] 
+		"disturbance_range": [-0.02, 0.02] 
 	},	
 	"additional_parameters": {
 		"cross_section":2.0,
-		"drain": 0.02
+		"drain": 0.04
 	}
 }

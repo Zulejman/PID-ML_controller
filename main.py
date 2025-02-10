@@ -7,7 +7,7 @@ import json
 
 def main():
 
-    plant_config = "config/bath_plant_cfg.json"
+    plant_config = "config/pressure_plant_cfg.json"
     control_config = "config/pid_control_cfg.json"
 
     consys = CONSYS(plant_config, control_config)

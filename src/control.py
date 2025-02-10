@@ -42,13 +42,11 @@ class PID(Controller):
 class NN(Controller):
     def __init__(self, control_file):
         super().__init__(control_file)
-        # NN-specific configuration.
         self.num_layers = self.control_cfg.get("layers", 0)
         self.neurons = self.control_cfg.get("neurons", 10)
         self.activation_name = self.control_cfg.get("activation", "relu").lower()
         self.init_range = self.control_cfg.get("init_range", [-0.1, 0.1])
 
-        # Select activation function.
         if self.activation_name == "sigmoid":
             self.activation = jax.nn.sigmoid
         elif self.activation_name == "tanh":
@@ -56,10 +54,8 @@ class NN(Controller):
         elif self.activation_name == "relu":
             self.activation = jax.nn.relu
         else:
-            raise ValueError(f"Unsupported activation function: {self.activation_name}")
+            raise ValueError(f"Typo: {self.activation_name}")
 
-        # Build the neural network.
-        # Input: 3-dimensional error vector; Output: control scalar U.
         layers = []
         key = jax.random.PRNGKey(42)
         lower, upper = self.init_range
@@ -70,39 +66,29 @@ class NN(Controller):
             b = jax.random.uniform(key_b, (d_out,), minval=lower, maxval=upper)
             return (W, b), key
 
-        d_in = 3  # our network input dimension is 3.
+        d_in = 3  
         if self.num_layers == 0:
-            # Single linear layer: 3 -> 1.
             (W, b), key = init_layer(key, d_in, 1)
             layers.append((W, b))
         else:
-            # First hidden layer: 3 -> neurons.
             (W, b), key = init_layer(key, d_in, self.neurons)
             layers.append((W, b))
-            # Additional hidden layers.
             for _ in range(self.num_layers - 1):
                 (W, b), key = init_layer(key, self.neurons, self.neurons)
                 layers.append((W, b))
-            # Output layer: neurons -> 1.
             (W, b), key = init_layer(key, self.neurons, 1)
             layers.append((W, b))
 
         self.params = layers
 
     def nn_forward(self, x, params=None):
-        """
-        Performs a forward pass through the network.
-        x: Input array of shape (3,).
-        Returns a scalar control signal.
-        """
         if params is None:
             params = self.params
         out = x
         if len(params) == 1:
-            # Single linear layer.
             W, b = params[0]
             y = jnp.dot(out, W) + b[0]
-            return jnp.squeeze(y)  # ensure scalar output
+            return jnp.squeeze(y) 
         else:
             for layer in params[:-1]:
                 W, b = layer
@@ -110,19 +96,9 @@ class NN(Controller):
                 out = self.activation(out)
             W, b = params[-1]
             y = jnp.dot(out, W) + b[0]
-            return jnp.squeeze(y)  # ensure scalar output
+            return jnp.squeeze(y)  
 
     def pid_step(self, ctrl_state, error, params):
-        """
-        Computes the control signal using the NN based on the error inputs.
-        The error vector is constructed as:
-          [error (proportional), new_integral (integral), derivative (error difference)]
-        ctrl_state: tuple (prev_error, integral_sum)
-        error: scalar error from the plant.
-        Returns:
-            control: scalar control signal.
-            new_ctrl_state: updated (prev_error, integral_sum)
-        """
         prev_error, integral_sum = ctrl_state
         new_integral = integral_sum + error
         derivative = error - prev_error

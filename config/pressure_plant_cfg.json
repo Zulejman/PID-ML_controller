@@ -8,6 +8,6 @@
 	},	
 	"additional_parameters": {
 		"temperature": 300.0,
-		"volume": 10
+		"volume": 10.0
 	}
 }
